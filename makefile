@@ -13,3 +13,7 @@ bin:
 .PHONY:
 run: 
 	./build/kmeans
+
+.PHONY:
+clean:
+	rm build/kmeans
