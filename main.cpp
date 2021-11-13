@@ -91,7 +91,6 @@ void kmeans(std::vector<T> data,T m1, T m2) {
     cout<<"\n Clusters created";
  
     //ending
-
 }
 
 
