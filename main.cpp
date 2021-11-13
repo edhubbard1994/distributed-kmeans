@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <omp.h>
-#include <conio.h>
+
 
 
 #define PROBLEM_SIZE 10
@@ -10,25 +10,17 @@ using std::cin;
 using std::cout;
 
 template<typename T>
-void kmeans(std::vector<T> data) {
+void kmeans(std::vector<T> data,T m1, T m2) {
     int i1,i2,i3,t1,t2;
-    int
-    T k0[data.size()];
+    int size = data.size();
+    T k0[size];
     std::copy(v.begin(), v.end(), k0);
-    int k1[data.size()];
-    int k2[data.size()];
+    T k1[size];
+    T k2[size];
  
  
-    //initial means
-    int m1;
-    int m2;
- 
-    cout<<"\n Enter initial mean 1:";
-    cin>>m1;
-    cout<<"\n Enter initial mean 2:";
-    cin>>m2;
-     
-    int om1,om2;    //old means
+      
+    T om1,om2;    //old means
  
     do
     {
@@ -39,7 +31,7 @@ void kmeans(std::vector<T> data) {
  
     //creating clusters
     i1=i2=i3=0;
-    for(i1=0;i1<10;i1++)
+    for(i1=0;i1<size;i1++)
     {
         //calculating distance to means
         t1=k0[i1]-m1;
@@ -99,7 +91,7 @@ void kmeans(std::vector<T> data) {
     cout<<"\n Clusters created";
  
     //ending
-    getch();
+
 }
 
 
