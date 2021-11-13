@@ -27,7 +27,7 @@ std::vector<T> getData(T lowest, T highest) {
 
 
 template<typename T>
-T getInitialMeans(typename std::vector<T> data,int k) {
+T *getInitialMeans(typename std::vector<T> data,int k) {
     T m[k];
     std::unordered_set<int> indexes;
     int i = 0
@@ -45,41 +45,57 @@ T getInitialMeans(typename std::vector<T> data,int k) {
 
 template<typename T>
 void kmeans(typename std::vector<T> data, int k) {
-    int i1,i2,i3,t1,t2;
+    int inp_itr,i2,i3,t1,t2;
     int size = data.size();
     T k0[size];
     std::copy(data.begin(), data.end(), k0);
-    T k1[size];
-    T k2[size];
+    T clusters [k][size];
  
- 
-      
-    T om1,om2;    //old means
+    T *means = getInitialMeans<T>(data, k);
+    //old means
+    T old_means[k];
+    T cluster_itrs[k];
+
  
     do {
-     
-    //saving old means
-    om1=m1;
-    om2=m2;
+    // saving old means
+    for (int i = 0; i < k; i ++) {
+        old_means[i] = means[i];
+    }
+    
  
     //creating clusters
-    i1=i2=i3=0;
-    for(i1=0;i1<size;i1++) {
+    inp_itr=0;
+    // cluster iterators
+    int k_indexes[k] = {0};
+    for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
-        t1=k0[i1]-m1;
-        if(t1<0){t1=-t1;}
+        int min = INT32_MAX;
+        int min_index = 0;
+        for (int d_index = 0; d_index <  k; d_index ++) {
+            int val = k0[inp_itr] - means[d_index];
+            if (val < 0) {
+                val = -val;
+            }
+            if (val < min) {
+                min_index = d_index;
+                min = val;
+            }
+        }
+        clusters[min_index][cluster_itrs[min_index]] = k0[inp_itr];
+        cluster_itrs[min_index] ++;
  
-        t2=k0[i1]-m2;
+        t2=k0[inp_itr]-m2;
         if(t2<0){t2=-t2;}
  
         if(t1<t2) {
             //near to first mean
-            k1[i2]=k0[i1];
+            k1[i2]=k0[inp_itr];
             i2++;
         }
         else {
             //near to second mean
-            k2[i3]=k0[i1];
+            k2[i3]=k0[inp_itr];
             i3++;
         }
  
@@ -124,7 +140,9 @@ void kmeans(typename std::vector<T> data, int k) {
 
 int main (int argc, char **argv) {
     auto x = getData<int>(3,58);
-    kmeans<int>(x, 20, 40);
+    int *t  = getInitialMeans<int>(x,3);
+
+    //kmeans<int>(x);
 
 
     return 0;
