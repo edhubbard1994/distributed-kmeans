@@ -1,6 +1,6 @@
-CC=gcc
+CC=g++
 
-LIB += -fopenmp
+LIB += -g #-fopenmp
 
 SRCS=main.cpp
 #HDRS= any h/hpp files

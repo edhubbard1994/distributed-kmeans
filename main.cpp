@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <omp.h>
+//#include <omp.h>
 #include <math.h>
 #include <algorithm>
 
@@ -14,23 +14,30 @@ using std::cout;
 
 
 template<typename T>
-std::vector<T> getData() {
-    std::vector<T> data;
+std::vector<T> getData(T lowest, T highest) {
+    typename std::vector<T> data;
     data.resize(PROBLEM_SIZE);
     srand(time(NULL));
 	for (auto index = data.begin(); index != data.end(); ++index) {
 		*index = (rand() % highest) + lowest;
 	}
+    return data;
 }
 
 
+template<typename T>
+T getInitialMeans(int k) {
+    
+    return NULL;
+}
+
 
 template<typename T>
-void kmeans(std::vector<T> data,T m1, T m2) {
+void kmeans(typename std::vector<T> data, int k) {
     int i1,i2,i3,t1,t2;
     int size = data.size();
     T k0[size];
-    std::copy(v.begin(), v.end(), k0);
+    std::copy(data.begin(), data.end(), k0);
     T k1[size];
     T k2[size];
  
@@ -105,7 +112,8 @@ void kmeans(std::vector<T> data,T m1, T m2) {
 
 
 int main (int argc, char **argv) {
-     
+    auto x = getData<int>(3,58);
+    kmeans<int>(x, 20, 40);
 
 
     return 0;
