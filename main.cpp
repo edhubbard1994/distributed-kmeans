@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>
+
 
 
 using std::cin;
@@ -100,7 +100,6 @@ void kmeans() {
     cout<<"\n Clusters created";
  
     //ending
-    getch();
 }
 
 
