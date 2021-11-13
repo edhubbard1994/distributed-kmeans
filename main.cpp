@@ -3,6 +3,7 @@
 //#include <omp.h>
 #include <math.h>
 #include <algorithm>
+#include <unordered_set>
 
 
 
@@ -26,9 +27,19 @@ std::vector<T> getData(T lowest, T highest) {
 
 
 template<typename T>
-T getInitialMeans(int k) {
-    
-    return NULL;
+T getInitialMeans(typename std::vector<T> data,int k) {
+    T m[k];
+    std::unordered_set<int> indexes;
+    int i = 0
+    while (i < k) {
+       int index = rand() % (data.size() - 1);
+       if (! indexes.find(index)){
+            m[i] = data[index];
+            indexes.insert(index);
+            ++i;
+       }
+    }
+    return m;
 }
 
 
