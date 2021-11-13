@@ -1,23 +1,21 @@
 #include <iostream>
+#include <vector>
 #include <conio.h>
 
+
+#define PROBLEM_SIZE 10
 
 using std::cin;
 using std::cout;
 
-
-void kmeans() {
+template<typename T>
+void kmeans(std::vector<T> data) {
     int i1,i2,i3,t1,t2;
- 
-    int k0[10];
-    int k1[10];
-    int k2[10];
- 
-    cout<<"\nEnter 10 numbers:\n";
-    for(i1=0;i1<10;i1++)
-    {
-        cin>>k0[i1];
-    }
+    int
+    T k0[data.size()];
+    std::copy(v.begin(), v.end(), k0);
+    int k1[data.size()];
+    int k2[data.size()];
  
  
     //initial means
