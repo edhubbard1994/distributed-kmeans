@@ -1,6 +1,6 @@
-CC=gcc
+CC=g++
 
-LIB += -fopenmp
+LIB += -g #-fopenmp
 
 SRCS=main.cpp
 #HDRS= any h/hpp files
@@ -17,3 +17,4 @@ run:
 .PHONY:
 clean:
 	rm build/kmeans
+	rm -rf build/kmeans.dSYM
