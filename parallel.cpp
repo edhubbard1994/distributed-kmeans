@@ -31,6 +31,7 @@ std::vector<T> getData(T lowest, T highest) {
 
 template<typename T>
 bool compareArrays(T *arr1,T *arr2 ,int size) {
+    #pragma omp parallel 
     for (int i = 0; i < size; i ++) {
         if (arr1[i] != arr2[i]) {
             return false;
@@ -80,10 +81,7 @@ void kmeans(typename std::vector<T> data, int k) {
     //creating clusters
     inp_itr=0;
     // cluster iterators
-    int k_indexes[k];
-    for (int t = 0; t < k ; t ++ ) {
-        k_indexes[t] = 0;
-    }
+  
     for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
         int min = INT32_MAX;
