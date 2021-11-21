@@ -25,15 +25,24 @@ std::vector<T> getData(T lowest, T highest) {
     return data;
 }
 
+template<typename T>
+bool compareArrays(T *arr1,T *arr2 ,int size) {
+    for (int i = 0; i < size; i ++) {
+        if (arr1[i] != arr2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 template<typename T>
 T *getInitialMeans(typename std::vector<T> data,int k) {
     T m[k];
     std::unordered_set<int> indexes;
-    int i = 0
+    int i = 0;
     while (i < k) {
        int index = rand() % (data.size() - 1);
-       if (! indexes.find(index)){
+       if (indexes.find(index) == indexes.end()){
             m[i] = data[index];
             indexes.insert(index);
             ++i;
@@ -55,7 +64,7 @@ void kmeans(typename std::vector<T> data, int k) {
     //old means
     T old_means[k];
     T cluster_itrs[k];
-
+    bool checkMeans = compareArrays<T>(means, old_means, k);
  
     do {
     // saving old means
@@ -67,7 +76,10 @@ void kmeans(typename std::vector<T> data, int k) {
     //creating clusters
     inp_itr=0;
     // cluster iterators
-    int k_indexes[k] = {0};
+    int k_indexes[k];
+    for (int t = 0; t < k ; t ++ ) {
+        k_indexes[t] = 0;
+    }
     for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
         int min = INT32_MAX;
@@ -84,52 +96,30 @@ void kmeans(typename std::vector<T> data, int k) {
         }
         clusters[min_index][cluster_itrs[min_index]] = k0[inp_itr];
         cluster_itrs[min_index] ++;
- 
-        t2=k0[inp_itr]-m2;
-        if(t2<0){t2=-t2;}
- 
-        if(t1<t2) {
-            //near to first mean
-            k1[i2]=k0[inp_itr];
-            i2++;
+    }
+
+    //calculating new means
+    for(int cluster = 0; cluster < k; cluster ++) {
+        int acc = 0;
+        for(int j = 0; j < cluster_itrs[cluster]; j ++)  {
+            acc += clusters[cluster][j];
         }
-        else {
-            //near to second mean
-            k2[i3]=k0[inp_itr];
-            i3++;
-        }
- 
+        means[cluster] = (acc / cluster_itrs[cluster]);
     }
- 
-    t2=0;
-    //calculating new mean
-    for(t1=0;t1<i2;t1++) {
-        t2=t2+k1[t1];
-    }
-    m1=t2/i2;
- 
-    t2=0;
-    for(t1=0;t1<i3;t1++) {
-        t2=t2+k2[t1];
-    }
-    m2=t2/i3;
- 
     //printing clusters
-    cout<<"\nCluster 1:";
-    for(t1=0;t1<i2;t1++) {
-        cout<<k1[t1]<<" ";
+    for (int cluster = 0; cluster < k; cluster ++) {
+        cout<<"\nCluster " << cluster << ":\n" ;
+        for(int x=0;x<cluster_itrs[cluster];x++) {
+            cout<<clusters[cluster][x]<<" ";
+        }
+        cout<<"\nm" << cluster << "=" << means[cluster];
     }
-    cout<<"\nm1="<<m1;
- 
-    cout<<"\nCluster 2:";
-    for(t1=0;t1<i3;t1++) {
-        cout<<k2[t1]<<" ";
-    }
-    cout<<"\nm2="<<m2;
+    
+    
  
     cout<<"\n ----";
-    
-    } while(m1!=om1&&m2!=om2);
+    checkMeans = compareArrays<T>(means, old_means, k);
+    } while( checkMeans == false);
  
     cout<<"\n Clusters created";
  
@@ -141,8 +131,7 @@ void kmeans(typename std::vector<T> data, int k) {
 int main (int argc, char **argv) {
     auto x = getData<int>(3,58);
     int *t  = getInitialMeans<int>(x,3);
-
-    //kmeans<int>(x);
+    kmeans<int>(x,4);
 
 
     return 0;
