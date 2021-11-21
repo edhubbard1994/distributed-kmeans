@@ -1,5 +1,5 @@
 CC=g++
-
+CCFLAGS += -fopenmp
 LIB += -g #-fopenmp
 
 SRCS=main.cpp
@@ -9,6 +9,11 @@ SRCS=main.cpp
 .PHONY:
 bin:
 	$(CC) $(LIB) $(SRCS) -o build/kmeans
+
+.PHONY:
+parallel:
+	$(CC) $(CCFLAGS) $(LIB) $(SRCS) -o build/kmeans
+
 
 .PHONY:
 run: 
