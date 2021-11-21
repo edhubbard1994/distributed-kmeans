@@ -1,6 +1,13 @@
+/**
+ * Original K-means algorithm pulled from the internet
+ * It can only do two clusters, this should be dynamic and inputs should not depend on stdin
+ *  
+ * 
+*/
 #include <iostream>
 
 using namespace std;
+
 
 int main()
 {
