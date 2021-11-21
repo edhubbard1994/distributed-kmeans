@@ -11,7 +11,7 @@
 
 
 
-#define PROBLEM_SIZE 10
+#define PROBLEM_SIZE 100000
 
 using std::cin;
 using std::cout;
@@ -86,6 +86,7 @@ void kmeans(typename std::vector<T> data, int k) {
         //calculating distance to means
         int min = INT32_MAX;
         int min_index = 0;
+        #pragma omp parallel shared(min)
         for (int d_index = 0; d_index <  k; d_index ++) {
             int val = k0[inp_itr] - means[d_index];
             if (val < 0) {
