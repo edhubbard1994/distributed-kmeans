@@ -37,7 +37,7 @@ bool compareArrays(T *arr1,T *arr2 ,int size) {
 
 template<typename T>
 T *getInitialMeans(typename std::vector<T> data,int k) {
-    T m[k];
+    T *m = (T *) calloc(k, sizeof(T));
     std::unordered_set<int> indexes;
     int i = 0;
     while (i < k) {
@@ -62,8 +62,8 @@ void kmeans(typename std::vector<T> data, int k) {
  
     T *means = getInitialMeans<T>(data, k);
     //old means
-    T old_means[k];
-    T cluster_itrs[k];
+    T *old_means = (T *) calloc(k, sizeof(T));
+    T *cluster_itrs = (T *) calloc(k, sizeof(T));
     bool checkMeans = compareArrays<T>(means, old_means, k);
  
     do {
@@ -121,9 +121,12 @@ void kmeans(typename std::vector<T> data, int k) {
     checkMeans = compareArrays<T>(means, old_means, k);
     } while( checkMeans == false);
  
-    cout<<"\n Clusters created";
+    cout<<"\n Clusters created\n\n";
  
     //ending
+    free(cluster_itrs);
+    free(old_means);
+    free(means);
 }
 
 

@@ -17,3 +17,4 @@ run:
 .PHONY:
 clean:
 	rm build/kmeans
+	rm -rf build/kmeans.dSYM
