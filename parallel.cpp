@@ -8,6 +8,7 @@
 #include <math.h>
 #include <algorithm>
 #include <unordered_set>
+#include <chrono>
 
 
 
@@ -31,7 +32,7 @@ std::vector<T> getData(T lowest, T highest) {
 
 template<typename T>
 bool compareArrays(T *arr1,T *arr2 ,int size) {
-    #pragma omp parallel 
+
     for (int i = 0; i < size; i ++) {
         if (arr1[i] != arr2[i]) {
             return false;
@@ -137,7 +138,11 @@ void kmeans(typename std::vector<T> data, int k) {
 int main (int argc, char **argv) {
     auto x = getData<int>(3,58);
     int *t  = getInitialMeans<int>(x,3);
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     kmeans<int>(x,4);
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "time elapsed: ";
+    std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
 
 
     return 0;

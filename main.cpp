@@ -76,7 +76,7 @@ void kmeans(typename std::vector<T> data, int k) {
     //creating clusters
     inp_itr=0;
     // cluster iterators
-
+    
     for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
         int min = INT32_MAX;
