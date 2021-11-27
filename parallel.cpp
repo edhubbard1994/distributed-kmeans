@@ -65,7 +65,11 @@ void kmeans(typename std::vector<T> data, int k) {
     T k0[size];
     std::copy(data.begin(), data.end(), k0);
     T clusters [k][size];
- 
+    for (int i = 0; i < k; i ++) {
+        for (int j = 0; j < size; j ++) {
+            clusters [i][j] = 0;
+        }
+    }
     T *means = getInitialMeans<T>(data, k);
     //old means
     T *old_means = (T *) calloc(k, sizeof(T));
