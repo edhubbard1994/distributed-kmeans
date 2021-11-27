@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <chrono>
+#include <exception>
 
 
 
@@ -143,7 +144,11 @@ int main (int argc, char **argv) {
     auto x = getData<int>(3,58);
     int *t  = getInitialMeans<int>(x,3);
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    kmeans<int>(x,4);
+    try{
+        kmeans<int>(x,4);
+    } catch(exception& e) {
+        std::cout << e.what() << std::endl;
+    }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout << "time elapsed: ";
     std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
