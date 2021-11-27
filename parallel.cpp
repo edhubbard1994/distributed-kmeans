@@ -146,7 +146,7 @@ int main (int argc, char **argv) {
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     try{
         kmeans<int>(x,4);
-    } catch(exception& e) {
+    } catch(std::exception& e) {
         std::cout << e.what() << std::endl;
     }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
