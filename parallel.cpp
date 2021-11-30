@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <vector>
-// #include <omp.h>
+#include <omp.h>
 #include <math.h>
 #include <algorithm>
 #include <unordered_set>
@@ -112,6 +112,7 @@ int kmeans(typename std::vector<T> data, int k) {
     //calculating new means
     for(int cluster = 0; cluster < k; cluster ++) {
         int acc = 0;
+	#pragma omp parallel for  reduction(+:acc)
         for(int j = 0; j < cluster_itrs[cluster]; j ++)  {
             acc += clusters[cluster][j];
         }
