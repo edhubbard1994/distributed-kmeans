@@ -89,6 +89,8 @@ int kmeans(typename std::vector<T> data, int k) {
     //creating clusters
     inp_itr=0;
     // cluster iterators
+    //#pragma omp parallel for schedule(static)  private(min, min_index) firstprivate(size, k)
+    //#pragma omp parallel for schedule(static)  private(min, min_index)
     for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
         int min = INT32_MAX;
@@ -112,7 +114,7 @@ int kmeans(typename std::vector<T> data, int k) {
     //calculating new means
     for(int cluster = 0; cluster < k; cluster ++) {
         int acc = 0;
-	#pragma omp parallel for  reduction(+:acc)
+	//#pragma omp parallel for  reduction(+:acc)
         for(int j = 0; j < cluster_itrs[cluster]; j ++)  {
             acc += clusters[cluster][j];
         }
