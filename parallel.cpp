@@ -60,9 +60,10 @@ T *getInitialMeans(typename std::vector<T> data,int k) {
 
 
 template<typename T>
-void kmeans(typename std::vector<T> data, int k) {
+int kmeans(typename std::vector<T> data, int k) {
     int inp_itr,i2,i3,t1,t2;
     int size = data.size();
+    int iteration_count = 0;
     T k0[size];
     std::copy(data.begin(), data.end(), k0);
     T clusters [k][size];
@@ -75,10 +76,10 @@ void kmeans(typename std::vector<T> data, int k) {
     //old means
     T *old_means = (T *) calloc(k, sizeof(T));
     bool checkMeans = compareArrays<T>(means, old_means, k);
- 
+     
     do {
     // saving old means
-
+    iteration_count ++;
     T *cluster_itrs = (T *) calloc(k, sizeof(T));
     for (int i = 0; i < k; i ++) {
         old_means[i] = means[i];
@@ -111,6 +112,7 @@ void kmeans(typename std::vector<T> data, int k) {
     //calculating new means
     for(int cluster = 0; cluster < k; cluster ++) {
         int acc = 0;
+	#pragma omp parallel for  reduction(+:acc)
         for(int j = 0; j < cluster_itrs[cluster]; j ++)  {
             acc += clusters[cluster][j];
         }
@@ -137,6 +139,7 @@ void kmeans(typename std::vector<T> data, int k) {
     //ending
     free(old_means);
     free(means);
+    return iteration_count;
 }
 
 
@@ -145,15 +148,11 @@ int main (int argc, char **argv) {
     auto x = getData<unsigned long>(3,58);
     unsigned long *t  = getInitialMeans<unsigned long>(x,3);
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    try{
-        kmeans<unsigned long>(x,3);
-    } catch(std::exception& e) {
-        std::cout << e.what() << std::endl;
-    }
+    int num_iterations = kmeans<unsigned long>(x,3); 
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout << "Time Elapsed: ";
     double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    std::cout << time / 1000.0  << std::endl;
+    std::cout << (time / (1000.0 * num_iterations))  << std::endl;
 
     return 0;
 }
