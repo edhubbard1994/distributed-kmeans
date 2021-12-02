@@ -1,7 +1,7 @@
 /**
  * Full parallelized version of the algorithm
 */
-
+#include <string.h>
 #include <iostream>
 #include <vector>
 // #include <omp.h>
@@ -10,16 +10,18 @@
 #include <unordered_set>
 #include <chrono>
 #include <exception>
+#ifdef RUNNER
+#include "parallel.cpp"
+#endif
 
 
-
-#define PROBLEM_SIZE 100000000
+//#define PROBLEM_SIZE 100000000
 
 using std::cin;
 using std::cout;
 
 
-
+#ifndef RUNNER
 template<typename T>
 std::vector<T> getData(T lowest, T highest) {
     typename std::vector<T> data;
@@ -57,22 +59,25 @@ T *getInitialMeans(typename std::vector<T> data,int k) {
     }
     return m;
 }
-
+#endif
 
 template<typename T>
-int kmeans(typename std::vector<T> data, int k) {
+int kmeans(typename std::vector<T> data, int k, T* initial_means) {
     int inp_itr,i2,i3,t1,t2;
     int size = data.size();
     int iteration_count = 0;
     T k0[size];
     std::copy(data.begin(), data.end(), k0);
+    T *means = (T*) calloc(k,sizeof(T));
+    for (int i = 0; i < k; i ++) {
+	means[i] = initial_means[i];
+    }	
     T clusters [k][size];
     for (int i = 0; i < k; i ++) {
         for (int j = 0; j < size; j ++) {
             clusters [i][j] = 0;
         }
     }
-    T *means = getInitialMeans<T>(data, k);
     //old means
     T *old_means = (T *) calloc(k, sizeof(T));
     bool checkMeans = compareArrays<T>(means, old_means, k);
@@ -111,7 +116,7 @@ int kmeans(typename std::vector<T> data, int k) {
 
     //calculating new means
     for(int cluster = 0; cluster < k; cluster ++) {
-        int acc = 0;
+        T acc = 0;
         for(int j = 0; j < cluster_itrs[cluster]; j ++)  {
             acc += clusters[cluster][j];
         }
@@ -144,14 +149,26 @@ int kmeans(typename std::vector<T> data, int k) {
 
 
 int main (int argc, char **argv) {
-    auto x = getData<unsigned long>(3,58);
-    unsigned long *t  = getInitialMeans<unsigned long>(x,3);
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    int num_iterations = kmeans<unsigned long>(x,3); 
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Time Elapsed: ";
-    double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    std::cout << (time / (1000.0 * num_iterations))  << std::endl;
-
+    auto x = getData< long>(3,58);
+    long *t  = getInitialMeans< long>(x,3);
+   {
+	 std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    	int num_iterations = kmeans< long>(x,3,t); 
+  	  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+   	 std::cout << "Average Time Elapsed Per Iteration: ";
+    	double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    	std::cout << (time / (1000.0 * num_iterations))  << std::endl;
+    }
+    #ifdef RUNNER 
+    {
+    	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    	int num_iterations = kmeans_parallel<long>(x,3,t); 
+    	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    	std::cout << "Average Time Elapsed Per Iteration in parallel: ";
+    	double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    	std::cout << (time / (1000.0 * num_iterations))  << std::endl;
+    }
+    #endif
+   
     return 0;
 }

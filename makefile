@@ -15,6 +15,9 @@ bin:
 parallel:
 	$(CC) $(CCFLAGS) $(LIB) $(PAR_SRCS) -o build/parallel_kmeans
 
+.PHONY: both
+both:
+	$(CC) $(CCFLAGS) $(LIB) $(PAR_SRCS) $(SERIAL_SRCS) -D RUNNER -o build/both_kmeans
 
 .PHONY:
 run: 
@@ -30,3 +33,4 @@ clean:
 	rm -rf build/parallel_kmeans
 	rm -rf build/kmeans.dSYM
 	rm -rf build/parallel_kmeans
+	rm -rf build/both_kmeans
