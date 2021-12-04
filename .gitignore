@@ -1,4 +1,5 @@
 build/kmeans*
 build/both_kmeans*
+data.txt
 .vscode
 

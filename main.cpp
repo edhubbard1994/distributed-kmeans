@@ -1,15 +1,16 @@
 /**
  * Full parallelized version of the algorithm
 */
-#include <string.h>
+#include <string>
 #include <iostream>
 #include <vector>
-// #include <omp.h>
 #include <math.h>
 #include <algorithm>
 #include <unordered_set>
 #include <chrono>
 #include <exception>
+#include <fstream>
+#include <cstdlib>
 #ifdef RUNNER
 #include "parallel.cpp"
 #endif
@@ -31,6 +32,23 @@ std::vector<T> getData(T lowest, T highest) {
 		*index = (rand() % highest) + lowest;
 	}
     return data;
+}
+
+template<typename T>
+std::vector<T> readData() {
+
+	using std::vector;
+	using std::string;
+	typename vector<T> data;
+	ifstream input_file("data.txt");
+	while (input_file) {
+
+		string s;
+		if (!getline( infile, s )) break;
+		std::cout << s << "\n";
+		data.push_back( (T) std::atoi(s) );
+	}
+	return data;
 }
 
 template<typename T>
@@ -160,6 +178,8 @@ int main (int argc, char **argv) {
     auto x = getData< long>(3,58);
     long *t  = getInitialMeans< long>(x,3);
    {
+	
+	long s = readData<long>();
 	//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     	int num_iterations = kmeans<long>(x,3,t); 
 	//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
