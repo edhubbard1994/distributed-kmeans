@@ -1,2 +1,4 @@
 build/kmeans*
+build/both_kmeans*
 .vscode
+
