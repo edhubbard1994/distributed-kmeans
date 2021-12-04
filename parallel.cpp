@@ -12,7 +12,8 @@
 #include <exception>
 
 
-#define PROBLEM_SIZE 100000000
+//#define PROBLEM_SIZE 100000000
+#define PROBLEM_SIZE 10
 
 using std::cin;
 using std::cout;
@@ -125,30 +126,31 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
         }
         means[cluster] = (acc / cluster_itrs[cluster]);
     }
+    
     //printing clusters
-    for (int cluster = 0; cluster < k; cluster ++) {
-        cout<<"\nCluster " << cluster << ":\n" ;
+    //for (int cluster = 0; cluster < k; cluster ++) {
+      //  cout<<"\nCluster " << cluster << ":\n" ;
        // for(int x=0;x<cluster_itrs[cluster];x++) {
        //     cout<<clusters[cluster][x]<<" ";
        //  }
-        cout<<"\nm" << cluster << "=" << means[cluster];
-    }
+     //   cout<<"\nm" << cluster << "=" << means[cluster];
+    //}
     
     
     free(cluster_itrs);
  
-    cout<<"\n ----";
+    //cout<<"\n ----";
     checkMeans = compareArrays<T>(means, old_means, k);
     } while( checkMeans == false);
  
-    cout<<"\n Clusters created\n\n";
+    //cout<<"\n Clusters created\n\n";
  
     //ending
     free(old_means);
     free(means);
     // Print Time 
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Average Time Elapsed Per Iteration: ";
+    //std::cout << "Average Time Elapsed Per Iteration: ";
     double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
     std::cout << (time / (1000.0 * iteration_count))  << std::endl;
     return iteration_count;
