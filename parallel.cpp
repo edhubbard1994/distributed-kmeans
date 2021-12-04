@@ -77,8 +77,10 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
     }
     //old means
     T *old_means = (T *) calloc(k, sizeof(T));
-    bool checkMeans = compareArrays<T>(means, old_means, k);
+    //bool checkMeans = compareArrays<T>(means, old_means, k);
+    bool checkMeans = false;
      
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     do {
     // saving old means
     iteration_count ++;
@@ -93,6 +95,7 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
     // cluster iterators
     //#pragma omp parallel for schedule(static)  private(min, min_index) firstprivate(size, k)
     //#pragma omp parallel for schedule(static)  private(min, min_index)
+    #pragma omp parallel for 
     for( inp_itr=0; inp_itr<size; inp_itr++) {
         //calculating distance to means
         int min = INT32_MAX;
@@ -143,21 +146,12 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
     //ending
     free(old_means);
     free(means);
+    // Print Time 
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Average Time Elapsed Per Iteration: ";
+    double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    std::cout << (time / (1000.0 * iteration_count))  << std::endl;
     return iteration_count;
 }
 
 
-#ifndef RUNNER
-int main (int argc, char **argv) {
-    auto x = getData<unsigned long>(3,58);
-    unsigned long *t  = getInitialMeans<unsigned long>(x,3);
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    int num_iterations = kmeans<unsigned long>(x,3); 
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Average Time Elapsed Per Iteration: ";
-    double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    std::cout << (time / (1000.0 * num_iterations))  << std::endl;
-
-    return 0;
-}
-#endif
