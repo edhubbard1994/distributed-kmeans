@@ -18,7 +18,18 @@
 using std::cin;
 using std::cout;
 
+template<typename T>
+std::vector<T> readData() {
 
+	typename std::vector<T> data;
+	std::ifstream input_file("data.txt");
+	for( std::string line; getline( input_file, line ); )
+	{	
+		// std::cout << line << "\n";
+		data.push_back( ((T) std::atoi(line.c_str())) );
+	}
+	return data;
+}
 
 template<typename T>
 std::vector<T> getData(T lowest, T highest) {
