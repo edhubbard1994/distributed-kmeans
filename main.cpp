@@ -15,7 +15,6 @@
 #include "parallel.h"
 
 
-//#define PROBLEM_SIZE 100000000
 
 using std::cin;
 using std::cout;
