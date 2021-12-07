@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <chrono>
 #include <exception>
-
+#include <fstream>
 
 //#define PROBLEM_SIZE 100000000
 #define PROBLEM_SIZE 10
