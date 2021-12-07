@@ -1,31 +1,14 @@
 CC=g++
-CCFLAGS += -fopenmp
-LIB += -g #-fopenmp
+LIB += -fopenmp
+CCFLAGS += -g
 
-SERIAL_SRCS=main.cpp
-PAR_SRCS=parallel.cpp
-#HDRS= any h/hpp files
+SRCS=main.cpp
+HEADERS=parallel.h
 
 
 .PHONY:
 bin:
-	$(CC) $(LIB) $(SERIAL_SRCS) -o build/kmeans
-
-.PHONY:
-parallel:
-	$(CC) $(CCFLAGS) $(LIB) $(PAR_SRCS) -o build/parallel_kmeans
-
-.PHONY: both
-both:
-	$(CC) $(CCFLAGS) $(LIB) $(PAR_SRCS) $(SERIAL_SRCS) -D RUNNER -o build/both_kmeans
-
-.PHONY:
-run: 
-	./build/kmeans
-
-.PHONY:
-run_par:
-	./build/parallel_kmeans
+	$(CC) $(LIB) $(CCFLAGS)  $(HEADERS)  $(SRCS) -o build/kmeans
 
 .PHONY:
 clean:

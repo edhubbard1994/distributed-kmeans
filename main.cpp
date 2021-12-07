@@ -11,9 +11,8 @@
 #include <exception>
 #include <fstream>
 #include <cstdlib>
-#ifdef RUNNER
-#include "parallel.cpp"
-#endif
+
+#include "parallel.h"
 
 
 //#define PROBLEM_SIZE 100000000
@@ -21,63 +20,18 @@
 using std::cin;
 using std::cout;
 
-
-#ifndef RUNNER
-template<typename T>
-std::vector<T> getData(T lowest, T highest) {
-    typename std::vector<T> data;
-    data.resize(PROBLEM_SIZE);
-    srand(time(NULL));
-	for (auto index = data.begin(); index != data.end(); ++index) {
-		*index = (rand() % highest) + lowest;
-	}
-    return data;
-}
-
 template<typename T>
 std::vector<T> readData() {
 
-	using std::vector;
-	using std::string;
-	typename vector<T> data;
-	ifstream input_file("data.txt");
-	while (input_file) {
-
-		string s;
-		if (!getline( infile, s )) break;
-		std::cout << s << "\n";
-		data.push_back( (T) std::atoi(s) );
+	typename std::vector<T> data;
+	std::ifstream input_file("data.txt");
+	for( std::string line; getline( input_file, line ); )
+	{	
+		// std::cout << line << "\n";
+		data.push_back( ((T) std::atoi(line.c_str())) );
 	}
 	return data;
 }
-
-template<typename T>
-bool compareArrays(T *arr1,T *arr2 ,int size) {
-
-    for (int i = 0; i < size; i ++) {
-        if (arr1[i] != arr2[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-template<typename T>
-T *getInitialMeans(typename std::vector<T> data,int k) {
-    T *m = (T *) calloc(k, sizeof(T));
-    std::unordered_set<int> indexes;
-    int i = 0;
-    while (i < k) {
-       int index = rand() % (data.size() - 1);
-       if (indexes.find(index) == indexes.end()){
-            m[i] = data[index];
-            indexes.insert(index);
-            ++i;
-       }
-    }
-    return m;
-}
-#endif
 
 template<typename T>
 int kmeans(typename std::vector<T> data, int k, T* initial_means) {
@@ -175,28 +129,9 @@ int kmeans(typename std::vector<T> data, int k, T* initial_means) {
 
 
 int main (int argc, char **argv) {
-    auto x = getData< long>(3,58);
+    auto x = readData<long>();
     long *t  = getInitialMeans< long>(x,3);
-   {
-	
-	long s = readData<long>();
-	//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    	int num_iterations = kmeans<long>(x,3,t); 
-	//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	//std::cout << "Average Time Elapsed Per Iteration: ";
-	//double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-	//std::cout << (time / (1000.0 * num_iterations))  << std::endl;
-    }
-    #ifdef RUNNER 
-    {
-    //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     int num_iterations = kmeans_parallel<long>(x,3,t); 
-    //std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    //std::cout << "Average Time Elapsed Per Iteration: ";
-    //double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    //std::cout << (time / (1000.0 * num_iterations))  << std::endl;
-    }
-    #endif
    
     return 0;
 }

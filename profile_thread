@@ -1,5 +1,5 @@
 make clean
-make parallel
+make
 cores=( 1 2 4 8 16 32 64 128 256)
 export OMP_NUM_THREADS=$1
-make run_par
+./build/kmeans

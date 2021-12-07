@@ -1,4 +1,0 @@
-make clean
-make both
-export OMP_NUM_THREADS=$1
-./build/both_kmeans
