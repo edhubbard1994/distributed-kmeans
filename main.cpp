@@ -117,6 +117,7 @@ int kmeans(typename std::vector<T> data, int k, T* initial_means) {
 
 int main (int argc, char **argv) {
     auto x = readData<long>();
+    std::cout << "size of data: " << x.size() <<std::endl;
     long *t  = getInitialMeans< long>(x,3);
     int num_iterations = kmeans_parallel<long>(x,3,t); 
    

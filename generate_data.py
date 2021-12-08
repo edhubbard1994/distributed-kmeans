@@ -3,7 +3,7 @@ import os
 
 MIN = 1
 MAX = 200
-DATA_SIZE = 10000000
+DATA_SIZE = 1000000
 
 with open("data.txt", "a+") as file:
 	for i in range(DATA_SIZE):

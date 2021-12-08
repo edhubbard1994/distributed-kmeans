@@ -58,15 +58,19 @@ T *getInitialMeans(typename std::vector<T> data,int k) {
     T *m = (T *) calloc(k, sizeof(T));
     std::unordered_set<int> indexes;
     int i = 0;
-    while (i < k) {
-       int index = rand() % (data.size() - 1);
-       if (indexes.find(index) == indexes.end()){
-            m[i] = data[index];
-            indexes.insert(index);
-            ++i;
-       }
+    for (i = 0 ;i < k; i ++) {
+	m[i] = data[i];
     }
     return m;
+   // while (i < k) {
+   //    int index = rand() % (data.size() - 1);
+   //    if (indexes.find(index) == indexes.end()){
+   //         m[i] = data[index];
+   //         indexes.insert(index);
+   //         ++i;
+   //    }
+   // }
+   // return m;
 }
 
 
@@ -139,13 +143,10 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
     }
     
     //printing clusters
-    //for (int cluster = 0; cluster < k; cluster ++) {
-      //  cout<<"\nCluster " << cluster << ":\n" ;
-       // for(int x=0;x<cluster_itrs[cluster];x++) {
-       //     cout<<clusters[cluster][x]<<" ";
-       //  }
-     //   cout<<"\nm" << cluster << "=" << means[cluster];
-    //}
+   // for (int cluster = 0; cluster < k; cluster ++) {
+   //     cout<<"\nCluster " << cluster << ":\n" ;
+   //     cout<<"\nm" << cluster << "=" << means[cluster];
+   // }
     
     
     free(cluster_itrs);
@@ -163,7 +164,7 @@ int kmeans_parallel(typename std::vector<T> data, int k, T *initial_means) {
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     //std::cout << "Average Time Elapsed Per Iteration: ";
     double time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    std::cout << (time / (1000.0 * iteration_count))  << std::endl;
+    std::cout << "\n\n the time per iteration: " << (time / (1000.0 * iteration_count))  << std::endl;
     return iteration_count;
 }
 
